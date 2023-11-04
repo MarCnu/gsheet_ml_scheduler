@@ -11,15 +11,19 @@ import string
 import time
 
 class GSheetMLScheduler():
-  def __init__(self, gsheet_file_url, sheet_index=0, comma_number_format=False):
+  def __init__(self, gsheet_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, google_service_account_json_path=None):
     """
     gsheet_file_url (str): The URL of the Google Sheets file
     sheet_index (int, optional): In case you don't want to use the default "Sheet1" tab (default is 0)
     comma_number_format (bool, optional): Some languages use decimal numbers with a comma, for example "-2,0" or "1,5E-3" (default is False, indicating period as the default decimal separator)
+    google_service_account_json_path (str, optional): Set to None (default) to get a popup asking to give this Colab instance the right to modify a Google Account (the right is revoked when the broswer tab is closed)
+                                                      Set to a path to the file 'service_account.json' to connect to Google's APIs without Colab. Even to read/write a publicly modifiable Google Docs file, bots need a Google Service Account key
     """
     self.gsheet_file_url = gsheet_file_url
     self.worker_name = GSheetMLScheduler.generate_short_uuid()
     self.comma_number_format = comma_number_format
+    self.hardcoded_default_config = hardcoded_default_config
+    self.google_service_account_json_path = google_service_account_json_path
 
     self.all_sheets = self.login_and_get_sheets()
     self.sheet_index = sheet_index
@@ -38,12 +42,12 @@ class GSheetMLScheduler():
     if str_point_format == '':
       return str_point_format
 
-    str_lower_case = str_point_format.lower()
+    str_lower_case = str_point_format.lower() # Boolean
     if str_lower_case == 'true':
       return True
     if str_lower_case == 'false':
       return False
-    
+
     if str_point_format.isdecimal(): # Positive integer
       try:
         return int(str_point_format)
@@ -78,7 +82,7 @@ class GSheetMLScheduler():
     for gsheet_key in gsheet_config:
       full_config[gsheet_key] = gsheet_config[gsheet_key]
     return full_config
-  
+
   def login_and_get_sheets(self):
     """
     This opens a popup to give your Colab file the reading/writing rights on the GSheet file
@@ -87,10 +91,13 @@ class GSheetMLScheduler():
 
     This uses colab.auth library
     """
-    colab_auth.authenticate_user() # That line is the only part that is Colab specific, I was too lazy to search how to make it work on other Python environments
-    credentials, _ = google_auth_default()
-    gclient = gspread.authorize(credentials)
-
+    if self.google_service_account_json_path is None: # Use Google Docs Sheets API through Colab 
+      colab_auth.authenticate_user() # That line is the only part that is Colab specific. Popup that asks for the right to modify a Google Account
+      credentials, _ = google_auth_default()
+      gclient = gspread.authorize(credentials)
+    else: # Use Google Docs Sheets API with a Google Services Account key
+      gclient = gspread.service_account(self.google_service_account_json_path)
+    
     all_sheets = gclient.open_by_url(self.gsheet_file_url)
     return all_sheets
 
@@ -156,6 +163,9 @@ class GSheetMLScheduler():
   def get_run_config(self, run_id):
     """
     This uses the config_defaults to complete empty config cells
+
+    This DOESN'T use the hardcoded_config_defaults
+    Hardcoded defaults are only used at the very last moment in find_ready_run and check_for_config_updates, as if you were using it manually outside of the class
     """
     config = {}
     for key in self.config_keys:
@@ -179,8 +189,11 @@ class GSheetMLScheduler():
 
     for i in range(len(self.values["status"])):
       if self.values["status"][i] == "ready" and self.values["worker_name"][i] == "":
-        self.currently_running_config = self.get_run_config(i)
-        return i, self.currently_running_config
+        config = self.get_run_config(i)
+        self.currently_running_config = config # We store the config that has gsheet values + gsheet defaults, not the one with hardcoded defaults
+        if self.hardcoded_default_config is not None:
+          config = GSheetMLScheduler.complete_missing_config_params(config, self.hardcoded_default_config)
+        return i, config
 
     return None, None
 
@@ -208,7 +221,7 @@ class GSheetMLScheduler():
     # Part 2: Wait long enough for another worker to eventually erase your claim
     time.sleep(2.0)
 
-    # Part 3: If nobody erased your claim 
+    # Part 3: If nobody erased your claim
     self.download_data()
     if not(self.values["status"][run_id] == "ready"):
       print(f"Failure, run {run_id}  ({self.values['run_name'][run_id]}) isn't ready to be claimed. Status: {self.values['status'][run_id]}")
@@ -255,7 +268,7 @@ class GSheetMLScheduler():
             return None, None # We abandon, as if there was no run ready
         else:
           return self.values["run_name"][ready_run_id], config # successful claim
-  
+
   def run_done(self):
     """
     Writes "status" as "finished" and changes the line color
@@ -272,7 +285,7 @@ class GSheetMLScheduler():
     self.currently_running_config = None
     self.currently_running_run_id = None
     return True
-  
+
   def update_status(self, new_status_str):
     """
     Update the status of the currently runnning run
@@ -280,7 +293,7 @@ class GSheetMLScheduler():
     if self.currently_running_run_id is None:
       print("Failure, no currently runnning run")
       return
-    
+
     self.sheet.update_cell(1+2+self.currently_running_run_id, 1+self.key_ids["status"], new_status_str)
 
   def check_for_config_updates(self):
@@ -307,16 +320,19 @@ class GSheetMLScheduler():
     for key in changed_keys:
       cell_name = rowcol_to_a1(1+2+self.currently_running_run_id, 1+self.key_ids[key])
       self.sheet.format(cell_name, {"textFormat": {"foregroundColor": {'red': 0.0, "green": 0.7, "blue": 0.12}}})
-    
+
     self.currently_running_config = updated_config
+
+    if self.hardcoded_default_config is not None:
+      updated_config = GSheetMLScheduler.complete_missing_config_params(updated_config, self.hardcoded_default_config)
     return updated_config, changed_keys
-  
+
   def sync_config_and_status(self, new_status_str=None):
     """
     Two actions in one: update_status(new_status_str) and check_for_config_updates()
-    
+
     new_status_str (default: None) Provide None as input if you only want to fetch config updates
-    
+
     Returns:
       updated_config = {config_key: config_value, ...} The most up-to-date dictionary of config metaparameters
       changed_keys = [changed_config_key, ...] The list of config keys for which the value was modified
