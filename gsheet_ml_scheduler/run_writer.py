@@ -68,6 +68,12 @@ class GSheetMLRunWriter():
       print("Config:", config)
       # We update the cells of the sheet
       for key, value in config.items():
+        # Create new columns in the sheet if some config keys don't exist
+        if key not in keys:
+          self.sheet.update_cell(1, 1+len(keys), key)
+          key_ids[key] = len(keys)
+          keys.append(key)
+
         str_value = str(value)
         if self.comma_number_format:
           str_value = str_value.replace(".",",") # Here we replace points by periods
