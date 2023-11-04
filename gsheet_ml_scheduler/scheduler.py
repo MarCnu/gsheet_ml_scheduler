@@ -15,7 +15,7 @@ class GSheetMLScheduler():
     """
     gsheet_file_url (str): The URL of the Google Sheets file
     sheet_index (int, optional): In case you don't want to use the default "Sheet1" tab (default is 0)
-    comma_number_format (bool, optional): Some languages use decimal numbers with a comma, for example "-2,0" or "1,5E-3" (default is False, indicating period as the default decimal separator)
+    comma_number_format (bool, optional): Some languages, Google Sheets uses decimal numbers with a comma, for example "-2,0" or "1,5E-3" (default is False, indicating period as the default decimal separator)
     google_service_account_json_path (str, optional): Set to None (default) to get a popup asking to give this Colab instance the right to modify a Google Account (the right is revoked when the broswer tab is closed)
                                                       Set to a path to the file 'service_account.json' to connect to Google's APIs without Colab. Even to read/write a publicly modifiable Google Docs file, bots need a Google Service Account key
     """
