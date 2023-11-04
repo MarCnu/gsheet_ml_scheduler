@@ -18,7 +18,7 @@ class GSheetMLScheduler():
     comma_number_format (bool, optional): Some languages use decimal numbers with a comma, for example "-2,0" or "1,5E-3" (default is False, indicating period as the default decimal separator)
     """
     self.gsheet_file_url = gsheet_file_url
-    self.worker_id = GSheetMLScheduler.generate_short_uuid()
+    self.worker_name = GSheetMLScheduler.generate_short_uuid()
     self.comma_number_format = comma_number_format
 
     self.all_sheets = self.login_and_get_sheets()
@@ -27,7 +27,7 @@ class GSheetMLScheduler():
     self.download_data()
 
     self.currently_running_run_id = None
-    print(f'Scheduler connected to GSheet, its name is worker <{self.worker_id}>')
+    print(f'Scheduler connected to GSheet, its name is worker <{self.worker_name}>')
 
   @staticmethod
   def convert_str_to_int_float_str(str_point_format):
@@ -102,7 +102,7 @@ class GSheetMLScheduler():
     config_keys = list(keys)
     config_keys.remove("run_name")
     config_keys.remove("status")
-    config_keys.remove("worker_id")
+    config_keys.remove("worker_name")
 
     key_ids = {}
     for i in range(size[1]):
@@ -142,7 +142,7 @@ class GSheetMLScheduler():
     self.size = size
     self.nb_runs = size[0]-2 # Not used in this code, but useful for users to iterate over get_run_config(run_id)
     self.keys = keys # All colmun names
-    self.config_keys = config_keys # All column names except run_name/status/worker_id
+    self.config_keys = config_keys # All column names except run_name/status/worker_name
     self.key_ids = key_ids # Key to column number conversion
     self.config_defaults = config_defaults # config_defaults[config_key] contains a list of the values of a column, with the first two lines excluded (first is key names, second is defaults)
     self.values = values # values[key] contains a list of the values of a column, with the first two lines excluded (first is key names, second is defaults)
@@ -172,7 +172,7 @@ class GSheetMLScheduler():
     self.download_data()
 
     for i in range(len(self.values["status"])):
-      if self.values["status"][i] == "ready" and self.values["worker_id"][i] == "":
+      if self.values["status"][i] == "ready" and self.values["worker_name"][i] == "":
         self.tmp_config = self.get_run_config(i)
         return i, self.tmp_config
 
@@ -183,19 +183,19 @@ class GSheetMLScheduler():
     In case you use multiple Colab sessions at the same time, there are some checks to claim a run,
     to avoid having two sessions starting the same run
 
-    The claimer downloads the sheet and checks that the worker_id cell is empty
-    The claimer writes its worker_id in the sheet and waits for 2 seconds
-    Then, it downloads the sheet content a second time and if its worker_id didn't get erased by another worker, then it's safe to claim
+    The claimer downloads the sheet and checks that the worker_name cell is empty
+    The claimer writes its worker_name in the sheet and waits for 2 seconds
+    Then, it downloads the sheet content a second time and if its worker_name didn't get erased by another worker, then it's safe to claim
     """
-    # Part 1: Download and check that "worker_id" is empty aka no other worker claimed it
+    # Part 1: Download and check that "worker_name" is empty aka no other worker claimed it
     self.download_data()
     if not(self.values["status"][run_id] == "ready"):
       print(f"Failure, run {run_id} ({self.values['run_name'][run_id]}) isn't ready to be claimed. Status: {self.values['status'][run_id]}")
       return False
-    if not(self.values["worker_id"][run_id] == ""):
-      print(f'Failure, run {run_id} ({self.values["run_name"][run_id]}) is already claimed by the worker <{self.values["worker_id"][run_id]}>')
+    if not(self.values["worker_name"][run_id] == ""):
+      print(f'Failure, run {run_id} ({self.values["run_name"][run_id]}) is already claimed by the worker <{self.values["worker_name"][run_id]}>')
       return False
-    self.sheet.update_cell(1+2+run_id, 1+self.key_ids["worker_id"], self.worker_id) # Gsheet (0,0) cell is called (1,1)
+    self.sheet.update_cell(1+2+run_id, 1+self.key_ids["worker_name"], self.worker_name) # Gsheet (0,0) cell is called (1,1)
 
     # Part 2: Wait long enough for another worker to eventually erase your claim
     time.sleep(2.0)
@@ -205,8 +205,8 @@ class GSheetMLScheduler():
     if not(self.values["status"][run_id] == "ready"):
       print(f"Failure, run {run_id}  ({self.values['run_name'][run_id]}) isn't ready to be claimed. Status: {self.values['status'][run_id]}")
       return False
-    if not(self.values["worker_id"][run_id] == self.worker_id):
-      print(f'Failure, your claim on the run {run_id} ({self.values["run_name"][run_id]}) has been stolen by the worker <{self.values["worker_id"][run_id]}>')
+    if not(self.values["worker_name"][run_id] == self.worker_name):
+      print(f'Failure, your claim on the run {run_id} ({self.values["run_name"][run_id]}) has been stolen by the worker <{self.values["worker_name"][run_id]}>')
       return False
 
     self.sheet.update_cell(1+2+run_id, 1+self.key_ids["status"], "running")
