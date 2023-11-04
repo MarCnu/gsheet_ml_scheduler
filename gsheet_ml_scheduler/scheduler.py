@@ -38,9 +38,10 @@ class GSheetMLScheduler():
     if str_point_format == '':
       return str_point_format
 
-    if str_point_format == 'True' or str_point_format == 'true':
+    str_lower_case = str_point_format.lower()
+    if str_lower_case == 'true':
       return True
-    if str_point_format == 'False' or str_point_format == 'false':
+    if str_lower_case == 'false':
       return False
     
     if str_point_format.isdecimal(): # Positive integer
