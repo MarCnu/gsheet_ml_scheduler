@@ -49,7 +49,6 @@ class GSheetMLRunWriter():
     """
     data = self.sheet.get_all_values()
 
-    dataframe = pd.DataFrame(data) # Panda is used for easier handling of 2d arrays with dataframe[i,j]
     size = (len(data), len(data[0]))
     keys = data[0]
 
