@@ -30,14 +30,19 @@ class GSheetMLScheduler():
     print(f'Scheduler connected to GSheet, its name is worker <{self.worker_name}>')
 
   @staticmethod
-  def convert_str_to_int_float_str(str_point_format):
+  def convert_str_to_bool_int_float_str(str_point_format):
     """
-    Convert raw data str to int/float/str. HEX isn't handled, nor other exotic types
+    Convert raw data str to bool/int/float/str. Hex isn't handled, nor other exotic types
     The number decimal separator must be a point
     """
     if str_point_format == '':
       return str_point_format
 
+    if str_point_format == 'True' or str_point_format == 'true':
+      return True
+    if str_point_format == 'False' or str_point_format == 'false':
+      return False
+    
     if str_point_format.isdecimal(): # Positive integer
       try:
         return int(str_point_format)
@@ -117,7 +122,7 @@ class GSheetMLScheduler():
 
     # Here we handle the languages with comma decimal separators
     # There is no fancy way to check if it's a comma number and not a text with a comma
-    # All values of config_key
+    # In all values of config_key, commas are replaced by points
     for config_key in config_keys:
       # Part 1: The default values
       str_value = config_defaults[config_key]
@@ -125,7 +130,7 @@ class GSheetMLScheduler():
         point_value = str_value.replace(",", ".")
       else:
         point_value = str_value
-      converted_type_value = GSheetMLScheduler.convert_str_to_int_float_str(point_value)
+      converted_type_value = GSheetMLScheduler.convert_str_to_bool_int_float_str(point_value)
       config_defaults[config_key] = converted_type_value
 
       # Part 2: The config values of all lines except the first 2 (first is key names, second is defaults)
@@ -136,7 +141,7 @@ class GSheetMLScheduler():
           point_value = str_value.replace(",", ".")
         else:
           point_value = str_value
-        converted_type_value = GSheetMLScheduler.convert_str_to_int_float_str(point_value)
+        converted_type_value = GSheetMLScheduler.convert_str_to_bool_int_float_str(point_value)
         values[config_key][i] = converted_type_value
 
     self.size = size
