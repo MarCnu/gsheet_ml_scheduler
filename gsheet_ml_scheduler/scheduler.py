@@ -11,10 +11,10 @@ import string
 import time
 
 class GSheetMLScheduler():
-  def __init__(self, gsheet_file_url, sheet_number=0, comma_number_format=False):
+  def __init__(self, gsheet_file_url, sheet_index=0, comma_number_format=False):
     """
     gsheet_file_url (str): The URL of the Google Sheets file
-    sheet_number (int, optional): In case you don't want to use the default "Sheet1" tab (default is 0)
+    sheet_index (int, optional): In case you don't want to use the default "Sheet1" tab (default is 0)
     comma_number_format (bool, optional): Some languages use decimal numbers with a comma, for example "-2,0" or "1,5E-3" (default is False, indicating period as the default decimal separator)
     """
     self.gsheet_file_url = gsheet_file_url
@@ -22,8 +22,8 @@ class GSheetMLScheduler():
     self.comma_number_format = comma_number_format
 
     self.all_sheets = self.login_and_get_sheets()
-    self.sheet_number = sheet_number
-    self.sheet = self.all_sheets.worksheets()[self.sheet_number]
+    self.sheet_index = sheet_index
+    self.sheet = self.all_sheets.worksheets()[self.sheet_index]
     self.download_data()
 
     self.currently_running_run_id = None
