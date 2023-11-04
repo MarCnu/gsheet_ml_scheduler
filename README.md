@@ -21,7 +21,6 @@ pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 
 2) Retrieve the sharing link (no need to give read/write rights)  
    **Share > Copy link**  
-   ![Get Link](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/1_copy_link.png?token=GHSAT0AAAAAACJRPKEIRRPSCE5VUDOHOKV2ZKGZIHQ)
    
 3) Run this in Colab and replace the `sheet_link` by your own  
    <a href="https://colab.research.google.com/drive/1JsnfMWknoiij5l5V1lQSdofWJxudJwSN?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
@@ -49,4 +48,10 @@ while True:
 
   # Replaces status "running" by "done"
   scheduler.run_done()
+```
+```bash
+Scheduler connected to GSheet, its name is worker <C0g3fQ>
+Starting run 2 with config={'n_epoch': 10, 'learning_rate': '1,00E-04'}
+Starting run 3 with config={'n_epoch': 10, 'learning_rate': '5,00E-05'}
+No more ready runs
 ```
