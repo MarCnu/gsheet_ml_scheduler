@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='gsheet_ml_scheduler',
+    name='gsheet-ml-scheduler',
     version='1.0',
     url='https://github.com/MarCnu/gsheet_ml_scheduler.git',
     author='MarCnu',
