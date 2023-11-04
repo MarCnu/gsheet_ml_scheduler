@@ -3,7 +3,7 @@ from google.auth import default as google_auth_default
 
 import gspread
 
-class GSheetMLRunWiter():
+class GSheetMLRunWriter():
   def __init__(self, gsheet_file_url, sheet_index=0, comma_number_format=False, google_service_account_json_path=None):
     """
     gsheet_file_url (str): The URL of the Google Sheets file
