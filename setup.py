@@ -7,5 +7,5 @@ setup(
     author='MarCnu',
     description='A simple scheduler that allows multiple instances of Colab to fetch machine learning run configs from a Google Docs Sheets',
     packages=['gsheet_ml_scheduler'],    
-    install_requires=['pandas, gspread, google-auth'],
+    install_requires=['pandas', 'gspread', 'google-auth'],
 )
