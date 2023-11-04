@@ -1,1 +1,1 @@
-from .scheduler import GSheetMLScheduler
+from scheduler import GSheetMLScheduler
