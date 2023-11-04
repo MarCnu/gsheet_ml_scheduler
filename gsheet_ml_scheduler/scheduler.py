@@ -1,3 +1,15 @@
+from google.colab import auth as colab_auth
+from google.auth import default as google_auth_default
+
+import gspread
+from gspread.utils import rowcol_to_a1
+
+import pandas as pd
+
+import random
+import string
+import time
+
 class GSheetMLScheduler():
   def __init__(self, gsheet_file_url, sheet_number=0, comma_number_format=False):
     """
