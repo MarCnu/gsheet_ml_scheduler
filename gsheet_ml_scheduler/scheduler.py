@@ -179,8 +179,8 @@ class GSheetMLScheduler():
 
     for i in range(len(self.values["status"])):
       if self.values["status"][i] == "ready" and self.values["worker_name"][i] == "":
-        self.tmp_config = self.get_run_config(i)
-        return i, self.tmp_config
+        self.currently_running_config = self.get_run_config(i)
+        return i, self.currently_running_config
 
     return None, None
 
@@ -197,9 +197,11 @@ class GSheetMLScheduler():
     self.download_data()
     if not(self.values["status"][run_id] == "ready"):
       print(f"Failure, run {run_id} ({self.values['run_name'][run_id]}) isn't ready to be claimed. Status: {self.values['status'][run_id]}")
+      self.currently_running_config = None
       return False
     if not(self.values["worker_name"][run_id] == ""):
       print(f'Failure, run {run_id} ({self.values["run_name"][run_id]}) is already claimed by the worker <{self.values["worker_name"][run_id]}>')
+      self.currently_running_config = None
       return False
     self.sheet.update_cell(1+2+run_id, 1+self.key_ids["worker_name"], self.worker_name) # Gsheet (0,0) cell is called (1,1)
 
@@ -210,9 +212,11 @@ class GSheetMLScheduler():
     self.download_data()
     if not(self.values["status"][run_id] == "ready"):
       print(f"Failure, run {run_id}  ({self.values['run_name'][run_id]}) isn't ready to be claimed. Status: {self.values['status'][run_id]}")
+      self.currently_running_config = None
       return False
     if not(self.values["worker_name"][run_id] == self.worker_name):
       print(f'Failure, your claim on the run {run_id} ({self.values["run_name"][run_id]}) has been stolen by the worker <{self.values["worker_name"][run_id]}>')
+      self.currently_running_config = None
       return False
 
     self.sheet.update_cell(1+2+run_id, 1+self.key_ids["status"], "running")
@@ -222,8 +226,8 @@ class GSheetMLScheduler():
 
     # Write in gray the config values copied from default
     for config_key in self.config_keys:
-      if self.tmp_config[config_key] != self.values[config_key][run_id]:
-        self.sheet.update_cell(1+2+run_id, 1+self.key_ids[config_key], self.tmp_config[config_key])
+      if self.currently_running_config[config_key] != self.values[config_key][run_id]:
+        self.sheet.update_cell(1+2+run_id, 1+self.key_ids[config_key], self.currently_running_config[config_key])
         cell_name = rowcol_to_a1(1+2+run_id, 1+self.key_ids[config_key])
         self.sheet.format(cell_name, {"textFormat": {"foregroundColor": {'red': 0.8, "green": 0.8, "blue": 0.8}}})
 
@@ -264,5 +268,60 @@ class GSheetMLScheduler():
     self.sheet.update_cell(1+2+self.currently_running_run_id, 1+self.key_ids["status"], "done")
     cell_name = rowcol_to_a1(1+2+self.currently_running_run_id, 1) + ":" + rowcol_to_a1(1+2+self.currently_running_run_id, self.size[1])
     self.sheet.format(cell_name, {'backgroundColor': {'red': 0.8, "green": 0.9, "blue": 1.0}})
+
+    self.currently_running_config = None
     self.currently_running_run_id = None
     return True
+  
+  def update_status(self, new_status_str):
+    """
+    Update the status of the currently runnning run
+    """
+    if self.currently_running_run_id is None:
+      print("Failure, no currently runnning run")
+      return
+    
+    self.sheet.update_cell(1+2+self.currently_running_run_id, 1+self.key_ids["status"], new_status_str)
+
+  def check_for_config_updates(self):
+    """
+    Downloads the sheet content and check if some config parameters changed
+
+    Returns:
+      updated_config = {config_key: config_value, ...} The most up-to-date dictionary of config metaparameters
+      changed_keys = [changed_config_key, ...] The list of config keys for which the value was modified
+    """
+    if self.currently_running_run_id is None:
+      print("Failure, no currently runnning run")
+      return
+
+    self.download_data()
+    updated_config = self.get_run_config(self.currently_running_run_id)
+
+    changed_keys = []
+    for key in updated_config.keys():
+      if key not in self.currently_running_config.keys():
+        changed_keys.append(key)
+      elif updated_config[key] != self.currently_running_config[key]:
+        changed_keys.append(key)
+    for key in changed_keys:
+      cell_name = rowcol_to_a1(1+2+self.currently_running_run_id, 1+self.key_ids[key])
+      self.sheet.format(cell_name, {"textFormat": {"foregroundColor": {'red': 0.0, "green": 0.7, "blue": 0.12}}})
+    
+    self.currently_running_config = updated_config
+    return updated_config, changed_keys
+  
+  def sync_config_and_status(self, new_status_str=None):
+    """
+    Two actions in one: update_status(new_status_str) and check_for_config_updates()
+    
+    new_status_str (default: None) Provide None as input if you only want to fetch config updates
+    
+    Returns:
+      updated_config = {config_key: config_value, ...} The most up-to-date dictionary of config metaparameters
+      changed_keys = [changed_config_key, ...] The list of config keys for which the value was modified
+    """
+    if new_status_str is not None:
+      self.update_status(new_status_str)
+    updated_config, changed_keys = self.check_for_config_updates()
+    return updated_config, changed_keys
