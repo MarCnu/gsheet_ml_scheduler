@@ -28,7 +28,7 @@ pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 from gsheet_ml_scheduler.scheduler import GSheetMLScheduler
 import time
 
-# During the initialisation, a popup will open asking you to grant Colab read/write rights
+# During the initialisation, a popup will ask you to grant Colab read/write rights
 sheet_link = "https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing"
 scheduler = GSheetMLScheduler(sheet_link)
 
