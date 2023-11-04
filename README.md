@@ -15,9 +15,16 @@ pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 !pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 ```
 ### Basic use: Fetch run configs until none is left in "ready" status
-1) Make a copy of this Google Docs Sheets file
-[GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing)
-2) Share > Copy the link (no need to give read/write rights to anyone)
+1) Make a copy of this Google Docs Sheets file [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing)  
+   **File > Create a copy**  
+![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png?token=GHSAT0AAAAAACJRPKEJEJORKRN53OTL2GLKZKGZVSA)
+
+2) Retrieve the sharing link (no need to give read/write rights)  
+   **Share > Copy link**  
+   ![Get Link](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/1_copy_link.png?token=GHSAT0AAAAAACJRPKEIRRPSCE5VUDOHOKV2ZKGZIHQ)
+   
+3) Run this in Colab and replace the `sheet_link` by your own  
+   <a href="https://colab.research.google.com/drive/1JsnfMWknoiij5l5V1lQSdofWJxudJwSN?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
 ```python
 from gsheet_ml_scheduler.scheduler import GSheetMLScheduler
 import time
