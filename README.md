@@ -119,6 +119,17 @@ run_writer.write_runs(configs)
 ```
 
 ```python
+################
+# Line 1 is reserved for naming config keys
+# Line 2 is reversed for default_config values
+# Lines below that are free to use for your runs
+#
+# Columns "run_name", "status" and "worker_name" are MANDATORY
+# Column order doesn't matter (all is based on Line 1 column names)
+################
+```
+
+```python
 print("Colors", scheduler.colors) # You can change the colors
 
 scheduler.download_data() # Manually downloads the gsheet data
