@@ -75,7 +75,7 @@ The result looks like that:
 ![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png?token=GHSAT0AAAAAACJRPKEJIDSE5I3IG54GTHBCZKHSXMQ)
 
 ## Documentation
-
+### GSheetMLScheduler
 ```python
 from gsheet_ml_scheduler.scheduler import GSheetMLScheduler
 
@@ -104,7 +104,7 @@ scheduler.update_status(new_status_str)
 gsheet_updated_config, changed_keys = scheduler.check_for_config_updates()
 updated_config = GSheetMLScheduler.complete_missing_config_params(gsheet_updated_config, hardcoded_default_config)
 ```  
-
+### GSheetMLRunWriter
 ```python
 from gsheet_ml_scheduler.run_writer import GSheetMLRunWriter
 
@@ -117,7 +117,7 @@ run_writer = GSheetMLRunWriter(gsheet_file_url, sheet_index=0, comma_number_form
 # configs (list of dicts): A list of configs to be added to the Sheet
 run_writer.write_runs(configs)
 ```
-
+### Sheet format
 ```python
 ################
 # Line 1 is reserved for naming config keys
@@ -128,7 +128,7 @@ run_writer.write_runs(configs)
 # Column order doesn't matter (all is based on Line 1 column names)
 ################
 ```
-
+### Misc
 ```python
 print("Colors", scheduler.colors) # You can change the colors
 
