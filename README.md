@@ -103,6 +103,9 @@ updated_config, changed_keys = scheduler.sync_config_and_status(new_status_str=N
 scheduler.update_status(new_status_str)
 gsheet_updated_config, changed_keys = scheduler.check_for_config_updates()
 updated_config = GSheetMLScheduler.complete_missing_config_params(gsheet_updated_config, hardcoded_default_config)
+
+# This sets the "status" columb of the current run to "done
+scheduler.run_done()
 ```  
 ### GSheetMLRunWriter
 ```python
