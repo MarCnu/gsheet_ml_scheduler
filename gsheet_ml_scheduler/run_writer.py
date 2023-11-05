@@ -18,7 +18,7 @@ class GSheetMLRunWriter():
     self.google_service_account_json_path = google_service_account_json_path
 
     self.colors = {
-      "new_column_name": {'red': 0.7, "green": 0.7, "blue": 0.7}
+      "new_column_name": {'red': 0.9, "green": 0.9, "blue": 0.9}
     }
     
     self.all_sheets = self.login_and_get_sheets()
