@@ -14,21 +14,21 @@ pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 !pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 ```
 ### BASIC USE: Fetch run configs until none is left in "ready" status
-1) Make a copy of this Google Docs Sheets file [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing)  
+1) Make a copy of this Google Docs Sheets file [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit)  
    **File > Create a copy**  
-![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png?token=GHSAT0AAAAAACJRPKEJT2VYN25UNDIXZDDKZKHVLAQ)
+![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png)
 
 2) Retrieve the sharing link (no need to give read/write rights)  
    **Share > Copy link**  
    
 3) Run this in Colab and replace the `sheet_link` by your own  
-   <a href="https://colab.research.google.com/drive/1JsnfMWknoiij5l5V1lQSdofWJxudJwSN?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+   <a href="https://colab.research.google.com/drive/1JsnfMWknoiij5l5V1lQSdofWJxudJwSN"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
 ```python
 from gsheet_ml_scheduler.scheduler import GSheetMLScheduler
 import time
 
 # Each time you restart a Colab session, a popup will ask for read/write rights again
-sheet_link = "https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing"
+sheet_link = "https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit"
 scheduler = GSheetMLScheduler(sheet_link)
 
 while True:
@@ -57,27 +57,27 @@ No more ready runs
 ```
 
 4) The sheet has been updated!  
-   ![Running](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/1_running.png?token=GHSAT0AAAAAACJRPKEJQUUKJLARRBYSUJJCZKHVHFQ)
+   ![Running](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/1_running.png)
 
 5) **Try again:**
    Copy/paste more runs.  
    Make copies of your Colab file to allow running multiple sessions at the same time.  
-   ![Instance copies](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_instance_copies.png?token=GHSAT0AAAAAACJRPKEJBLZISBFTX6S3DIKEZKHVHRQ)  
+   ![Instance copies](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_instance_copies.png)  
    Run them all at the same time.  
    All the Colab workers will connect to the same Google Sheet and modify it!  
    Out of the box, nothing to program, no complicated 3rd party website, no account to create.  
-   ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/3_multi_worker.png?token=GHSAT0AAAAAACJRPKEI4Y27LQNJPCZ3WXXAZKHVHYQ)
+   ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/3_multi_worker.png)
    
 ### ALL FEATURES: How to write new runs for metaparameter grid search. How to sync config metadata while an experiment is running.  
-Run this in Colab and replace the `sheet_link` by your copy of the [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing) (see the BASIC USE tutorial)  
+Run this in Colab and replace the `sheet_link` by your copy of the [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit) (see the BASIC USE tutorial)  
 <a href="https://colab.research.google.com/drive/1vxvmURd5_Ka_ui4UyH5DREf74V8vCtyD"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>  
 The result looks like that:  
-![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png?token=GHSAT0AAAAAACJRPKEITMFKZH3CVOIPJB6SZKHVH7A)
+![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png)
 
 ### Colab + Google Sheets + Weights & Biases
 For a great and easy to use ML expriment environment, you can combine both this GSheetMLScheduler for scheduling and the famous Weight & Biases platform for logging.  
 You'll be able to track the progress of your learning with graphs on WandB in real time and then update your GSheet to change metaparameters on the fly!  
-![Sheets WandB](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/5_gsheet_weight_and_biases.png?token=GHSAT0AAAAAACJRPKEICOZFL4QUBIAQEFWMZKHWJHQ)
+![Sheets WandB](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/5_gsheet_weight_and_biases.png)
 
 ## Documentation
 ### GSheetMLScheduler
