@@ -1,5 +1,5 @@
 # Google Sheet ML Scheduler: Google Docs Sheets live editing flexibility to manage your Machine Learning experiments!
-A simple experiment scheduler that allows multiple instances of Colab to fetch machine learning experiment metaparameters by reading/writing in a sheet from Google Docs Sheets.  
+A simple experiment scheduler that allows multiple instances of Colab to fetch machine learning experiment metaparameters by reading/writing in a Sheet from Google Docs Sheets.  
 
 ## A simple tool with only 3 features:  
 1. Let your Colab script fetch a run config from a Sheet
