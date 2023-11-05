@@ -96,7 +96,7 @@ claim_success = scheduler.claim_and_start_run(ready_run_id)
 config = GSheetMLScheduler.complete_missing_config_params(gsheet_config, hardcoded_default_config)
 
 
-# This both downloads the Sheet run config and change the "status" at the same time
+# This both downloads the Sheet run config and changes the "status" at the same time
 updated_config, changed_keys = scheduler.sync_config_and_status(new_status_str=None)
 
 # The same but in three separate functions, when using hardcoded_default_config=None
