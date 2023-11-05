@@ -104,7 +104,7 @@ scheduler.update_status(new_status_str)
 gsheet_updated_config, changed_keys = scheduler.check_for_config_updates()
 updated_config = GSheetMLScheduler.complete_missing_config_params(gsheet_updated_config, hardcoded_default_config)
 
-# This sets the "status" column of the current run to "done
+# Replaces "status" and sets a blue background
 scheduler.run_done(new_status_str="done")
 ```  
 ### GSheetMLRunWriter
