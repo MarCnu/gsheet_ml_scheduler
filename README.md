@@ -51,9 +51,9 @@ while True:
 ```
 ```bash
 Scheduler connected to GSheet, its name is worker <dF53M7>
-Starting run 1 with config={'n_epoch': 10, 'learning_rate': '5,00E-04'}
-Starting run 2 with config={'n_epoch': 10, 'learning_rate': '1,00E-04'}
-Starting run 3 with config={'n_epoch': 10, 'learning_rate': '5,00E-05'}
+Starting run 1 with config={'n_epoch': 10, 'learning_rate': '5.00E-04'}
+Starting run 2 with config={'n_epoch': 10, 'learning_rate': '1.00E-04'}
+Starting run 3 with config={'n_epoch': 10, 'learning_rate': '5.00E-05'}
 No more ready runs
 ```
 
