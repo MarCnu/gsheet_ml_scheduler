@@ -26,6 +26,13 @@ class GSheetMLScheduler():
     self.hardcoded_default_config = hardcoded_default_config
     self.google_service_account_json_path = google_service_account_json_path
 
+    self.colors = {
+      "running": {'red': 1.0, "green": 0.93, "blue": 0.8},
+      "done": {"red": 0.8, "green": 0.9, "blue": 1.0},
+      "default_text": {'red': 0.8, "green": 0.8, "blue": 0.8},
+      "modified_text": {'red': 0.0, "green": 0.7, "blue": 0.12}
+    }
+    
     self.all_sheets = self.login_and_get_sheets()
     self.sheet_index = sheet_index
     self.sheet = self.all_sheets.worksheets()[self.sheet_index]
@@ -236,14 +243,14 @@ class GSheetMLScheduler():
     self.sheet.update_cell(1+2+run_id, 1+self.key_ids["status"], "running")
     #cell_name = rowcol_to_a1(1+2+run_id, 1+self.key_ids["status"])
     cell_name = rowcol_to_a1(1+2+run_id, 1) + ":" + rowcol_to_a1(1+2+run_id, self.size[1])
-    self.sheet.format(cell_name, {'backgroundColor': {'red': 1.0, "green": 0.93, "blue": 0.8}})
+    self.sheet.format(cell_name, {"backgroundColor": self.colors["running"]}) # Running orange
 
     # Write in gray the config values copied from default
     for config_key in self.config_keys:
       if self.currently_running_config[config_key] != self.values[config_key][run_id]:
         self.sheet.update_cell(1+2+run_id, 1+self.key_ids[config_key], self.currently_running_config[config_key])
         cell_name = rowcol_to_a1(1+2+run_id, 1+self.key_ids[config_key])
-        self.sheet.format(cell_name, {"textFormat": {"foregroundColor": {'red': 0.8, "green": 0.8, "blue": 0.8}}})
+        self.sheet.format(cell_name, {"textFormat": {"foregroundColor": self.colors["default_text"]}}) # Default gray
 
     self.currently_running_run_id = run_id
     return True
@@ -281,7 +288,7 @@ class GSheetMLScheduler():
     self.download_data()
     self.sheet.update_cell(1+2+self.currently_running_run_id, 1+self.key_ids["status"], "done")
     cell_name = rowcol_to_a1(1+2+self.currently_running_run_id, 1) + ":" + rowcol_to_a1(1+2+self.currently_running_run_id, self.size[1])
-    self.sheet.format(cell_name, {'backgroundColor': {'red': 0.8, "green": 0.9, "blue": 1.0}})
+    self.sheet.format(cell_name, {"backgroundColor": self.colors["done"]}) # Done blue
 
     self.currently_running_config = None
     self.currently_running_run_id = None
@@ -320,7 +327,7 @@ class GSheetMLScheduler():
         changed_keys.append(key)
     for key in changed_keys:
       cell_name = rowcol_to_a1(1+2+self.currently_running_run_id, 1+self.key_ids[key])
-      self.sheet.format(cell_name, {"textFormat": {"foregroundColor": {'red': 0.0, "green": 0.7, "blue": 0.12}}})
+      self.sheet.format(cell_name, {"textFormat": {"foregroundColor": self.colors["modified_text"]}}) # Modified green
 
     self.currently_running_config = updated_config
 
