@@ -100,8 +100,8 @@ config = GSheetMLScheduler.complete_missing_config_params(gsheet_config, hardcod
 updated_config, changed_keys = scheduler.sync_config_and_status(new_status_str=None)
 
 # The same but in three separate functions, when using hardcoded_default_config=None
-gsheet_updated_config, changed_keys = scheduler.check_for_config_updates()
 scheduler.update_status(new_status_str)
+gsheet_updated_config, changed_keys = scheduler.check_for_config_updates()
 updated_config = GSheetMLScheduler.complete_missing_config_params(gsheet_updated_config, hardcoded_default_config)
 ```  
 
