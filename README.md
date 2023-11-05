@@ -14,7 +14,7 @@ pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 # In Colab
 !pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 ```
-### Basic use: Fetch run configs until none is left in "ready" status
+### BASIC USE: Fetch run configs until none is left in "ready" status
 1) Make a copy of this Google Docs Sheets file [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing)  
    **File > Create a copy**  
 ![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png?token=GHSAT0AAAAAACJRPKEJ7EW3I4QL3MAZEGB6ZKG2OMQ)
@@ -69,4 +69,6 @@ No more ready runs
    Out of the box, nothing to program, no complicated 3rd party website, no account to create.  
    ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_multi_worker.png?token=GHSAT0AAAAAACJRPKEJOUVUSE23BHJ5OAGGZKG3BJA)
    
-### Check for config modifications in the sheet during a run and update the status in the sheet
+### ALL FEATURES: How to sync config metadata while an experiment is running. How to write new runs for metaparameter grid search
+Run this in Colab and replace the `sheet_link` by your copy of the Sheets Basic Template (see the BASIC USE tutorial)    
+   <a href="https://colab.research.google.com/drive/1JsnfMWknoiij5l5V1lQSdofWJxudJwSN?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
