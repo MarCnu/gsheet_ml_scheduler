@@ -60,7 +60,11 @@ No more ready runs
 4) The sheet has been updated!  
    ![Running](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/1_running.png?token=GHSAT0AAAAAACJRPKEJ2YNSZAKOEE3KYIIYZKG2O2Q)
 
-5) Try again: Copy/paste more runs. Open the same Colab file in multiple browser tabs. Run them all at the same time.  
+5) **Try again:**
+   Copy/paste more runs.  
+   Make copies of your Colab file to allow running multiple sessions at the same time.  
+   ![Instance copies](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/3_instance_copies.png?token=GHSAT0AAAAAACJRPKEJRXSHNR7ELQVGFWPKZKHMQIQ)  
+   Run them all at the same time.  
    All the Colab workers will connect to the same Google Sheet and modify it!  
    Out of the box, nothing to program, no complicated 3rd party website, no account to create.  
    ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_multi_worker.png?token=GHSAT0AAAAAACJRPKEJOUVUSE23BHJ5OAGGZKG3BJA)
