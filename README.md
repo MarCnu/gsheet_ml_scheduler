@@ -16,7 +16,7 @@ pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 ### BASIC USE: Fetch run configs until none is left in "ready" status
 1) Make a copy of this Google Docs Sheets file [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing)  
    **File > Create a copy**  
-![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png?token=GHSAT0AAAAAACJRPKEJ7EW3I4QL3MAZEGB6ZKG2OMQ)
+![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png?token=GHSAT0AAAAAACJRPKEIRZD7HSR5Q455LBA6ZKHVG2A)
 
 2) Retrieve the sharing link (no need to give read/write rights)  
    **Share > Copy link**  
@@ -57,22 +57,22 @@ No more ready runs
 ```
 
 4) The sheet has been updated!  
-   ![Running](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/1_running.png?token=GHSAT0AAAAAACJRPKEJ2YNSZAKOEE3KYIIYZKG2O2Q)
+   ![Running](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/1_running.png?token=GHSAT0AAAAAACJRPKEJQUUKJLARRBYSUJJCZKHVHFQ)
 
 5) **Try again:**
    Copy/paste more runs.  
    Make copies of your Colab file to allow running multiple sessions at the same time.  
-   ![Instance copies](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/3_instance_copies.png?token=GHSAT0AAAAAACJRPKEJRXSHNR7ELQVGFWPKZKHMQIQ)  
+   ![Instance copies](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_instance_copies.png?token=GHSAT0AAAAAACJRPKEJBLZISBFTX6S3DIKEZKHVHRQ)  
    Run them all at the same time.  
    All the Colab workers will connect to the same Google Sheet and modify it!  
    Out of the box, nothing to program, no complicated 3rd party website, no account to create.  
-   ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_multi_worker.png?token=GHSAT0AAAAAACJRPKEJOUVUSE23BHJ5OAGGZKG3BJA)
+   ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/3_multi_worker.png?token=GHSAT0AAAAAACJRPKEI4Y27LQNJPCZ3WXXAZKHVHYQ)
    
 ### ALL FEATURES: How to write new runs for metaparameter grid search How to sync config metadata while an experiment is running.  
 Run this in Colab and replace the `sheet_link` by your copy of the [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing) (see the BASIC USE tutorial)  
 <a href="https://colab.research.google.com/drive/1vxvmURd5_Ka_ui4UyH5DREf74V8vCtyD"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>  
 The result looks like that:  
-![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png?token=GHSAT0AAAAAACJRPKEIU5PYMAPOATNQQ5GCZKHUVVA)
+![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png?token=GHSAT0AAAAAACJRPKEITMFKZH3CVOIPJB6SZKHVH7A)
 
 ## Documentation
 ### GSheetMLScheduler
