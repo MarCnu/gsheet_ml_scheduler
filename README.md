@@ -73,3 +73,47 @@ Run this in Colab and replace the `sheet_link` by your copy of the Sheets Basic 
 <a href="https://colab.research.google.com/drive/1vxvmURd5_Ka_ui4UyH5DREf74V8vCtyD"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>  
 The result looks like that:  
 ![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png?token=GHSAT0AAAAAACJRPKEJIDSE5I3IG54GTHBCZKHSXMQ)
+
+## Documentation
+
+```python
+from gsheet_ml_scheduler.scheduler import GSheetMLScheduler
+
+# gsheet_file_url (str): The sharing link of your Google Docs Sheets
+# sheet_index(int, optional): In case you want to use a specific tab of the Google Docs Sheets
+# hardcoded_default_config (dict, optional): For static metaparameters not provided to the Sheet
+# comma_number_format (bool, optional): For Google Docs languages that use comma separators for decimal numbers ("-2,0" "5,0E-3")
+# google_service_account_json_path (str, optional): To use Google Service Account to access the Google Docs Sheets API, mandatory if you're not using Colab
+GSheetMLScheduler(gsheet_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, google_service_account_json_path=None)
+
+
+# This can be used my multiple Colab instances (aka workers) in parallel
+run_name, config = scheduler.find_claim_and_start_run()
+
+# The same but in three separate functions, when using hardcoded_default_config=None
+ready_run_id, gsheet_config = scheduler.find_ready_run()
+claim_success = scheduler.claim_and_start_run(ready_run_id)
+config = GSheetMLScheduler.complete_missing_config_params(gsheet_config, hardcoded_default_config)
+
+
+# This both downloads the Sheet run config and change the "status" at the same time
+updated_config, changed_keys = scheduler.sync_config_and_status(new_status_str=None)
+
+# The same but in three separate functions, when using hardcoded_default_config=None
+gsheet_updated_config, changed_keys = scheduler.check_for_config_updates()
+scheduler.update_status(new_status_str)
+updated_config = GSheetMLScheduler.complete_missing_config_params(gsheet_updated_config, hardcoded_default_config)
+```  
+
+```python
+from gsheet_ml_scheduler.run_writer import GSheetMLRunWriter
+
+# gsheet_file_url (str): The sharing link of your Google Docs Sheets
+# sheet_index(int, optional): In case you want to use a specific tab of the Google Docs Sheets
+# comma_number_format (bool, optional): For Google Docs languages that use comma separators for decimal numbers ("-2,0" "5,0E-3")
+# google_service_account_json_path (str, optional): To use Google Service Account to access the Google Docs Sheets API, mandatory if you're not using Colab
+GSheetMLRunWriter(gsheet_file_url, sheet_index=0, comma_number_format=False, google_service_account_json_path=None)
+
+# configs (list of dicts): A list of configs to be added to the Sheet
+run_writer.write_runs(configs)
+```
