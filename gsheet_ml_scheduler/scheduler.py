@@ -277,7 +277,7 @@ class GSheetMLScheduler():
         else:
           return self.values["run_name"][ready_run_id], config # successful claim
 
-  def run_done(self):
+  def run_done(self, new_status_str="done"):
     """
     Writes "status" as "finished" and changes the line color
     """
@@ -286,7 +286,7 @@ class GSheetMLScheduler():
       return False
 
     self.download_data()
-    self.sheet.update_cell(1+2+self.currently_running_run_id, 1+self.key_ids["status"], "done")
+    self.sheet.update_cell(1+2+self.currently_running_run_id, 1+self.key_ids["status"], new_status_str)
     cell_name = rowcol_to_a1(1+2+self.currently_running_run_id, 1) + ":" + rowcol_to_a1(1+2+self.currently_running_run_id, self.size[1])
     self.sheet.format(cell_name, {"backgroundColor": self.colors["done"]}) # Done blue
 
