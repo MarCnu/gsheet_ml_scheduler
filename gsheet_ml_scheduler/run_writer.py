@@ -77,8 +77,6 @@ class GSheetMLRunWriter():
       
       config["status"] = "ready"
       
-      print("Config:", config)
-      
       # We update the cells of the sheet
       for key, value in config.items():
         # Create new columns in the sheet if some config keys don't exist
