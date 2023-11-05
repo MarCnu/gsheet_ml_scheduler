@@ -69,7 +69,7 @@ No more ready runs
    ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_multi_worker.png?token=GHSAT0AAAAAACJRPKEJOUVUSE23BHJ5OAGGZKG3BJA)
    
 ### ALL FEATURES: How to write new runs for metaparameter grid search How to sync config metadata while an experiment is running.  
-Run this in Colab and replace the `sheet_link` by your copy of the Sheets Basic Template (see the BASIC USE tutorial)  
+Run this in Colab and replace the `sheet_link` by your copy of the [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing) (see the BASIC USE tutorial)  
 <a href="https://colab.research.google.com/drive/1vxvmURd5_Ka_ui4UyH5DREf74V8vCtyD"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>  
 The result looks like that:  
 ![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png?token=GHSAT0AAAAAACJRPKEJIDSE5I3IG54GTHBCZKHSXMQ)
