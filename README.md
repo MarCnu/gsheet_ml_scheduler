@@ -1,4 +1,3 @@
-<a href="https://colab.research.google.com/github/ultralytics/ultralytics/blob/main/examples/tutorial.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
 # Google Sheet ML Scheduler: Google Docs Sheets live editing flexibility to manage your Machine Learning experiments!
 A simple experiment scheduler that allows multiple instances of Colab to fetch machine learning experiment metaparameters by reading/writing in a sheet from Google Docs Sheets.  
 
@@ -70,5 +69,5 @@ No more ready runs
    ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_multi_worker.png?token=GHSAT0AAAAAACJRPKEJOUVUSE23BHJ5OAGGZKG3BJA)
    
 ### ALL FEATURES: How to sync config metadata while an experiment is running. How to write new runs for metaparameter grid search
-Run this in Colab and replace the `sheet_link` by your copy of the Sheets Basic Template (see the BASIC USE tutorial)    
-   <a href="https://colab.research.google.com/drive/1JsnfMWknoiij5l5V1lQSdofWJxudJwSN?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+Run this in Colab and replace the `sheet_link` by your copy of the Sheets Basic Template (see the BASIC USE tutorial)
+<a href="https://colab.research.google.com/drive/1vxvmURd5_Ka_ui4UyH5DREf74V8vCtyD"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
