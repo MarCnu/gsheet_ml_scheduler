@@ -62,7 +62,7 @@ No more ready runs
 
 5) Try again: Copy/paste more runs. Open the same Colab file in multiple browser tabs. Run them all at the same time.  
    All the Colab workers will connect to the same Google Sheet and modify it!  
-   Out of the box, nothing to program, no account to create.  
+   Out of the box, nothing to program, no complicated 3rd party website, no account to create.  
    ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_multi_worker.png?token=GHSAT0AAAAAACJRPKEJOUVUSE23BHJ5OAGGZKG3BJA)
    
 ### Check for config modifications in the sheet during a run and update the status in the sheet
