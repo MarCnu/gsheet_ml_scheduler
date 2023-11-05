@@ -70,4 +70,6 @@ No more ready runs
    
 ### ALL FEATURES: How to sync config metadata while an experiment is running. How to write new runs for metaparameter grid search
 Run this in Colab and replace the `sheet_link` by your copy of the Sheets Basic Template (see the BASIC USE tutorial)  
-<a href="https://colab.research.google.com/drive/1vxvmURd5_Ka_ui4UyH5DREf74V8vCtyD"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+<a href="https://colab.research.google.com/drive/1vxvmURd5_Ka_ui4UyH5DREf74V8vCtyD"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>  
+The result looks like that:  
+![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png?token=GHSAT0AAAAAACJRPKEJIDSE5I3IG54GTHBCZKHSXMQ)
