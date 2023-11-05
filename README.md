@@ -117,3 +117,28 @@ run_writer = GSheetMLRunWriter(gsheet_file_url, sheet_index=0, comma_number_form
 # configs (list of dicts): A list of configs to be added to the Sheet
 run_writer.write_runs(configs)
 ```
+
+```python
+print("Colors", scheduler.colors) # You can change the colors
+
+scheduler.download_data() # Manually downloads the gsheet data
+
+print("Nb_runs", scheduler.nb_runs)
+print("Keys", scheduler.keys)
+print("Key_ids", scheduler.key_ids)
+print("Config_keys", scheduler.config_keys)
+print("Config_defaults", scheduler.config_defaults)
+print("Values", scheduler.values)
+
+# Use get_run_config(run_index) to get value + config_defaults (but not hardcoded_config_defaults)
+print("\nAll run-status-configs")
+for i in range(scheduler.nb_runs):
+  print([scheduler.values["run_name"][i], scheduler.values["status"][i], scheduler.get_run_config(i)])
+
+# You can make manual read/write operations to the Sheet using the gspread library
+# scheduler.all_sheets contains the gspread file root, if you want to access another tab of the file
+# scheduler.sheet can be used to call all gspread functions
+# Google Sheets uses (1,1) for the top left cell, not (0,0) as in normal Python
+_ = scheduler.sheet.update_cell(sheet_line, sheet_column, str_value)
+_ = scheduler.sheet.update_cell(1+python_line_index, 1+python_column_index, str_value)
+```
