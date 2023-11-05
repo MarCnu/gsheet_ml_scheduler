@@ -2,6 +2,7 @@ from google.colab import auth as colab_auth
 from google.auth import default as google_auth_default
 
 import gspread
+from gspread.utils import rowcol_to_a1
 
 class GSheetMLRunWriter():
   def __init__(self, gsheet_file_url, sheet_index=0, comma_number_format=False, google_service_account_json_path=None):
@@ -16,6 +17,10 @@ class GSheetMLRunWriter():
     self.comma_number_format = comma_number_format
     self.google_service_account_json_path = google_service_account_json_path
 
+    self.colors = {
+      "new_column_name": {'red': 0.7, "green": 0.7, "blue": 0.7}
+    }
+    
     self.all_sheets = self.login_and_get_sheets()
     self.sheet_index = sheet_index
     self.sheet = self.all_sheets.worksheets()[self.sheet_index]
@@ -66,10 +71,14 @@ class GSheetMLRunWriter():
       config["status"] = "ready"
       
       print("Config:", config)
+      
       # We update the cells of the sheet
       for key, value in config.items():
         # Create new columns in the sheet if some config keys don't exist
         if key not in keys:
+          cell_name = rowcol_to_a1(1, 1+len(keys))
+          self.sheet.format(cell_name, {"backgroundColor": self.colors["new_column_name"]}) # New column gray
+          
           self.sheet.update_cell(1, 1+len(keys), key)
           key_ids[key] = len(keys)
           keys.append(key)
