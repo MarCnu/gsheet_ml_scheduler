@@ -74,7 +74,7 @@ Run this in Colab and replace the `sheet_link` by your copy of the [GSheetMLSche
 The result looks like that:  
 ![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png?token=GHSAT0AAAAAACJRPKEITMFKZH3CVOIPJB6SZKHVH7A)
 
-### Colab + Sheets + Weights & Biases
+### Colab + Google Sheets + Weights & Biases
 For a great and easy to use ML expriment environment, you can combine both this GSheetMLScheduler for scheduling and the famous Weight & Biases platform for logging.  
 You'll be able to track the progress of your learning with graphs on WandB in real time and then update your GSheet to change metaparameters on the fly!  
 ![Sheets WandB](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/5_gsheet_weight_and_biases.png?token=GHSAT0AAAAAACJRPKEICOZFL4QUBIAQEFWMZKHWJHQ)
