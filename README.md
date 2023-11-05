@@ -16,7 +16,7 @@ pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
 ### BASIC USE: Fetch run configs until none is left in "ready" status
 1) Make a copy of this Google Docs Sheets file [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit?usp=sharing)  
    **File > Create a copy**  
-![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png?token=GHSAT0AAAAAACJRPKEIRZD7HSR5Q455LBA6ZKHVG2A)
+![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png?token=GHSAT0AAAAAACJRPKEJT2VYN25UNDIXZDDKZKHVLAQ)
 
 2) Retrieve the sharing link (no need to give read/write rights)  
    **Share > Copy link**  
