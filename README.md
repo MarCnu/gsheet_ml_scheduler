@@ -49,7 +49,7 @@ while True:
   scheduler.run_done()
 ```
 ```bash
-Scheduler connected to GSheet, its name is worker <dF53M7>
+Scheduler connected to GSheet, its name is worker <43dLkW>
 Starting run 1 with config={'n_epoch': 10, 'learning_rate': 0.0005}
 Starting run 2 with config={'n_epoch': 10, 'learning_rate': 0.0001}
 Starting run 3 with config={'n_epoch': 10, 'learning_rate': 5e-05}
