@@ -52,6 +52,7 @@ class GSheetMLRunWriter():
     
     This first downloads the sheet content to find where the config column names are located and how many lines there currenlty are
     """
+    # Generic data preprocessing
     data = self.sheet.get_all_values()
 
     size = (len(data), len(data[0]))
@@ -60,7 +61,13 @@ class GSheetMLRunWriter():
     key_ids = {}
     for i in range(size[1]):
       key_ids[keys[i]] = i
+    
+    self.size = size
+    self.nb_runs = size[0]-2 # Not used in this code, but useful for users to iterate over get_run_config(run_id)
+    self.keys = keys # All colmun names
+    self.key_ids = key_ids # Key to column number conversion
 
+    # We create new runs one by one
     first_new_run_id = size[0]-2
     first_new_run_line = 1+size[0]
     for i, config in enumerate(configs):
