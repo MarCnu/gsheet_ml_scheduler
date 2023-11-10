@@ -46,7 +46,7 @@ class GSheetMLRunWriter():
       colab_auth.authenticate_user() # That line is the only part that is Colab specific. Popup that asks for the right to modify a Google Account
       credentials, _ = google_auth_default()
       gclient = gspread.authorize(credentials)
-    else: # Use Google Docs Sheets API with a Google Services Account key
+    else: # Use Google Docs Sheets API with a Google Service Account key
       gclient = gspread.service_account(filename=self.google_service_account_json_path)
     
     all_sheets = gclient.open_by_url(self.gsheet_file_url)
