@@ -91,7 +91,7 @@ To obtain a service_account.json file, follow this video: https://www.youtube.co
 4. In the service account > Keys tab > Add Key > Json
 
 Once you have downloaded the json file, open it, copy the value of `client_email` and in the sharing settings of your Sheets file, add this email to the Editors  
-You may need to provide the absolute path to the JSON file for `google_service_account_json_path` to initialise `GSheetMLScheduler` and `GSheetMLRunWriter` as the relative path may be considered relative to gspread config folder and not your script folder
+Finally, use the parameter `google_service_account_json_path` during the initialisation of `GSheetMLScheduler` and `GSheetMLRunWriter`  
 
 ## Documentation
 ### GSheetMLScheduler
