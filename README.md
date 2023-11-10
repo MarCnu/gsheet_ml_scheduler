@@ -81,13 +81,18 @@ You'll be able to track the progress of your learning with graphs on WandB in re
 
 ## Authenticate with Google Service Account
 
-To obtain a services_account.json file, follow this video: https://www.youtube.com/watch?v=IZrzdspl_3k  
+In Colab, you can use `colab.auth` to give read/write rights to Google Drive  
+Outside of Colab, you must authenticate through a Google Service Account to access the Google Sheets API  
+
+To obtain a service_account.json file, follow this video: https://www.youtube.com/watch?v=IZrzdspl_3k  
 1. Create a Project in [Google Cloud Console](https://console.cloud.google.com) (You can name it gspread-api for example)  
 2. In the search bar, search for Google Sheets API (at the bottom, in the MarketPlace section) and activate the API for your Project  
 3. Open the navigation menu on the left > APIs & Services > Credentials > Create credentials > Service account > Name it "gspread-access" for example > Done  
-4. In the service account > Keys tab > Add Key > Json  
+4. In the service account > Keys tab > Add Key > Json
+
 Once you have downloaded the json file, open it, copy the value of `client_email` and in the sharing settings of your Sheets file, add this email to the Editors  
-You may need to provide the absolute path to the JSON file as `google_service_account_json_path` to initialise `GSheetMLScheduler` and `GSheetMLRunWriter` as the relative path may be considered relative to gspread config folder and not your script folder
+You may need to provide the absolute path to the JSON file for `google_service_account_json_path` to initialise `GSheetMLScheduler` and `GSheetMLRunWriter` as the relative path may be considered relative to gspread config folder and not your script folder
+
 ## Documentation
 ### GSheetMLScheduler
 ```python
