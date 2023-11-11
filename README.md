@@ -92,6 +92,9 @@ To obtain a account.json file, follow this video: https://www.youtube.com/watch?
 
 Once you have downloaded the json file, open it, copy the value of `client_email` and in the sharing settings of your Sheets file, add this email to the Editors  
 Finally, use the parameter `service_account_json_path` during the initialisation of `GSheetsMLScheduler` and `GSheetsMLRunWriter`  
+```python
+scheduler = GSheetsMLScheduler(sheets_link, service_account_json_path="service_account.json")
+```  
 
 ## Documentation
 ### GSheetsMLScheduler
