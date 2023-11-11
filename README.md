@@ -84,14 +84,14 @@ You'll be able to track the progress of your learning with graphs on WandB in re
 In Colab, you can use `colab.auth` to give read/write rights to Google Drive  
 Outside of Colab, you must authenticate through a Google Service Account to access the Google Sheets API  
 
-To obtain a service_account.json file, follow this video: https://www.youtube.com/watch?v=IZrzdspl_3k  
+To obtain a account.json file, follow this video: https://www.youtube.com/watch?v=IZrzdspl_3k  
 1. Create a Project in [Google Cloud Console](https://console.cloud.google.com) (You can name it gspread-api for example)  
 2. In the search bar, search for Google Sheets API (at the bottom, in the MarketPlace section) and activate the API for your Project  
 3. Open the navigation menu on the left > APIs & Services > Credentials > Create credentials > Service account > Name it "gspread-access" for example > Done  
 4. In the service account > Keys tab > Add Key > Json
 
 Once you have downloaded the json file, open it, copy the value of `client_email` and in the sharing settings of your Sheets file, add this email to the Editors  
-Finally, use the parameter `google_service_account_json_path` during the initialisation of `GSheetsMLScheduler` and `GSheetsMLRunWriter`  
+Finally, use the parameter `service_account_json_path` during the initialisation of `GSheetsMLScheduler` and `GSheetsMLRunWriter`  
 
 ## Documentation
 ### GSheetsMLScheduler
@@ -102,8 +102,8 @@ from gsheets_ml_scheduler.scheduler import GSheetsMLScheduler
 # sheet_index(int, optional): In case you want to use a specific tab of the Google Docs Sheets
 # hardcoded_default_config (dict, optional): For static metaparameters not provided to the sheet
 # comma_number_format (bool, optional): For Google Docs languages that use comma separators for decimal numbers ("-2,0" "5,0E-3")
-# google_service_account_json_path (str, optional): To use Google Service Account to access the Google Docs Sheets API, mandatory if you're not using Colab
-scheduler = GSheetsMLScheduler(gsheets_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, google_service_account_json_path=None)
+# service_account_json_path (str, optional): To use Google Service Account to access the Google Docs Sheets API, mandatory if you're not using Colab
+scheduler = GSheetsMLScheduler(gsheets_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, service_account_json_path=None)
 
 
 # This can be used my multiple Colab instances (aka workers) in parallel
@@ -134,7 +134,7 @@ from gsheets_ml_scheduler.run_writer import GSheetsMLRunWriter
 # sheet_index(int, optional): In case you want to use a specific tab of the Google Docs Sheets
 # comma_number_format (bool, optional): For Google Docs languages that use comma separators for decimal numbers ("-2,0" "5,0E-3")
 # service_account_json_path (str, optional): To use Google Service Account to access the Google Sheets API, mandatory if you're not using Colab
-run_writer = GSheetsMLRunWriter(gsheets_file_url, sheet_index=0, comma_number_format=False, google_service_account_json_path=None)
+run_writer = GSheetsMLRunWriter(gsheets_file_url, sheet_index=0, comma_number_format=False, service_account_json_path=None)
 
 # configs (list of dicts): A list of configs to be added to the sheet
 run_writer.write_runs(configs)
