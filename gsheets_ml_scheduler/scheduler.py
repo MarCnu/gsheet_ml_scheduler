@@ -15,7 +15,7 @@ import string
 import time
 
 class GSheetsMLScheduler():
-  def __init__(self, gsheets_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, google_service_account_json_path=None):
+  def __init__(self, gsheets_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, service_account_json_path=None):
     """
     gsheets_file_url (str): The URL of the Google Sheets file
     sheet_index (int, optional): In case you don't want to use the default "Sheet1" tab (default is 0)
@@ -103,9 +103,9 @@ class GSheetsMLScheduler():
 
     This uses colab.auth library
     """
-    if self.service_account_json_path is None: # Use Google Docs Sheets API through Colab
+    if self.ount_json_path is None: # Use Google Docs Sheets API through Colab
       if not is_colab:
-        print("This isn't running on Colab. Outside of Colab, you must use 'google_service_account_json_path' to authenticate")
+        print("This isn't running on Colab. Outside of Colab, you must use 'service_account_json_path' to authenticate")
         raise(Exception("NotColabNorServiceAccountError"))
       colab_auth.authenticate_user() # That line is the only part that is Colab specific. Popup that asks for the right to modify a Google Account
       credentials, _ = google_auth_default()
