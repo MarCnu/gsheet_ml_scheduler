@@ -8,18 +8,18 @@ except:
 import gspread
 from gspread.utils import rowcol_to_a1
 
-class GSheetMLRunWriter():
-  def __init__(self, gsheet_file_url, sheet_index=0, comma_number_format=False, google_service_account_json_path=None):
+class GSheetsMLRunWriter():
+  def __init__(self, gsheets_file_url, sheet_index=0, comma_number_format=False, google_service_account_json_path=None):
     """
-    gsheet_file_url (str): The URL of the Google Sheets file
+    gsheets_file_url (str): The URL of the Google Sheets file
     sheet_index (int, optional): In case you don't want to use the default "Sheet1" tab (default is 0)
     comma_number_format (bool, optional): In some languages, Google Sheets uses decimal numbers with a comma, for example "-2,0" or "1,5E-3" (default is False, indicating period as the default decimal separator)
-    google_service_account_json_path (str, optional): Set to None (default) to get a popup asking to give this Colab instance the right to modify a Google Account (the right is revoked when the broswer tab is closed)
+    service_account_json_path (str, optional): Set to None (default) to get a popup asking to give this Colab instance the right to modify a Google Account (the right is revoked when the broswer tab is closed)
                                                       Set to a path to the file 'service_account.json' to connect to Google's APIs without Colab. Even to read/write a publicly modifiable Google Docs file, bots need a Google Service Account key
     """
-    self.gsheet_file_url = gsheet_file_url
+    self.gsheets_file_url = gsheets_file_url
     self.comma_number_format = comma_number_format
-    self.google_service_account_json_path = google_service_account_json_path
+    self.service_account_json_path = service_account_json_path
 
     self.colors = {
       "new_column_name": {'red': 0.9, "green": 0.9, "blue": 0.9}
@@ -33,13 +33,13 @@ class GSheetMLRunWriter():
 
   def login_and_get_sheets(self):
     """
-    This opens a popup to give your Colab file the reading/writing rights on the GSheet file
+    This opens a popup to give your Colab file the reading/writing rights on the GSheets file
     Access rights do not persist after you close the Colab browser tab
     Rights are only given to that specific Colab browser tab
 
     This uses colab.auth library
     """
-    if self.google_service_account_json_path is None: # Use Google Docs Sheets API through Colab
+    if self.service_account_json_path is None: # Use Google Docs Sheets API through Colab
       if not is_colab:
         print("This isn't running on Colab. Outside of Colab, you must use 'google_service_account_json_path' to authenticate")
         raise(Exception("NotColabNorServiceAccountError"))
@@ -47,9 +47,9 @@ class GSheetMLRunWriter():
       credentials, _ = google_auth_default()
       gclient = gspread.authorize(credentials)
     else: # Use Google Docs Sheets API with a Google Service Account key
-      gclient = gspread.service_account(filename=self.google_service_account_json_path)
+      gclient = gspread.service_account(filename=self.service_account_json_path)
     
-    all_sheets = gclient.open_by_url(self.gsheet_file_url)
+    all_sheets = gclient.open_by_url(self.gsheets_file_url)
     return all_sheets
   
   def write_runs(self, configs):
