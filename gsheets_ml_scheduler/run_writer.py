@@ -74,19 +74,30 @@ class GSheetsMLRunWriter():
     self.keys = keys # All colmun names
     self.key_ids = key_ids # Key to column number conversion
 
-    # We create new runs one by one
-    first_new_run_id = size[0]-2
-    first_new_run_line = 1+size[0]
+    def get_update_col_dict(line_start_python, n_lines, col_python, value_list):
+        cell_name_start = rowcol_to_a1(1+line_start_python, 1+col_python)
+        cell_name_end = rowcol_to_a1(1+line_start_python+n_lines-1, 1+col_python)
+        values = []
+        for value in value_list:
+          str_value = str(value)
+          if self.comma_number_format:
+            str_value = str_value.replace(".",",") # Here we replace points by periods
+          values.append([str_value])
+        return {'range': f'{cell_name_start}:{cell_name_end}', 'values': values}
+
+    updated_keys = set()
     for i, config in enumerate(configs):
       # We add a number as default run_name
       if "run_name" not in config:
+        first_new_run_id = size[0] - 2
         config["run_name"] = first_new_run_id + i
       
       config["status"] = "ready"
-      
-      # We update the cells of the sheet
-      for key, value in config.items():
-        # Create new columns in the sheet if some config keys don't exist
+
+      updated_keys.update(config.keys()) # Reminder: it's a set not a list
+
+      # Create new columns in the sheet if some config keys don't exist
+      for key in config.keys():
         if key not in keys:
           cell_name = rowcol_to_a1(1, 1+len(keys))
           self.sheet.format(cell_name, {"backgroundColor": self.colors["new_column_name"]}) # New column gray
@@ -94,8 +105,12 @@ class GSheetsMLRunWriter():
           self.sheet.update_cell(1, 1+len(keys), key)
           key_ids[key] = len(keys)
           keys.append(key)
-
-        str_value = str(value)
-        if self.comma_number_format:
-          str_value = str_value.replace(".",",") # Here we replace points by periods
-        self.sheet.update_cell(first_new_run_line + i, 1+key_ids[key], str_value)
+          
+    # To avoid Sheets API spam limit, we do a batch_update, column by column
+    cell_updates = []
+    for key in updated_keys:
+      values_list = []
+      for conf in configs:
+        values_list.append(conf[key] if key in conf else "")
+      cell_updates.append(get_update_col_dict(size[0], len(configs), key_ids[key], values_list))
+    self.sheet.batch_update(cell_updates)
