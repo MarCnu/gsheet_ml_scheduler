@@ -103,7 +103,7 @@ class GSheetsMLScheduler():
 
     This uses colab.auth library
     """
-    if self.ount_json_path is None: # Use Google Docs Sheets API through Colab
+    if self.service_account_json_path is None: # Use Google Docs Sheets API through Colab
       if not is_colab:
         print("This isn't running on Colab. Outside of Colab, you must use 'service_account_json_path' to authenticate")
         raise(Exception("NotColabNorServiceAccountError"))
