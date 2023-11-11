@@ -14,21 +14,21 @@ import random
 import string
 import time
 
-class GSheetMLScheduler():
-  def __init__(self, gsheet_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, google_service_account_json_path=None):
+class GSheetsMLScheduler():
+  def __init__(self, gsheets_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, google_service_account_json_path=None):
     """
-    gsheet_file_url (str): The URL of the Google Sheets file
+    gsheets_file_url (str): The URL of the Google Sheets file
     sheet_index (int, optional): In case you don't want to use the default "Sheet1" tab (default is 0)
     hardcoded_default_config (dict, optional): If provided, the runs config will be completed with default key/values from hardcoded_default_config
     comma_number_format (bool, optional): In some languages, Google Sheets uses decimal numbers with a comma, for example "-2,0" or "1,5E-3" (default is False, indicating period as the default decimal separator)
-    google_service_account_json_path (str, optional): Set to None (default) to get a popup asking to give this Colab instance the right to modify a Google Account (the right is revoked when the broswer tab is closed)
+    service_account_json_path (str, optional): Set to None (default) to get a popup asking to give this Colab instance the right to modify a Google Account (the right is revoked when the broswer tab is closed)
                                                       Set to a path to the file 'service_account.json' to connect to Google's APIs without Colab. Even to read/write a publicly modifiable Google Docs file, bots need a Google Service Account key
     """
-    self.gsheet_file_url = gsheet_file_url
-    self.worker_name = GSheetMLScheduler.generate_short_uuid()
+    self.gsheets_file_url = gsheets_file_url
+    self.worker_name = GSheetsMLScheduler.generate_short_uuid()
     self.comma_number_format = comma_number_format
     self.hardcoded_default_config = hardcoded_default_config
-    self.google_service_account_json_path = google_service_account_json_path
+    self.service_account_json_path = service_account_json_path
 
     self.colors = {
       "running": {'red': 1.0, "green": 0.93, "blue": 0.8},
@@ -43,7 +43,7 @@ class GSheetMLScheduler():
     self.download_data()
 
     self.currently_running_run_id = None
-    print(f'Scheduler connected to GSheet, its name is worker <{self.worker_name}>')
+    print(f'Scheduler connected to GSheets, its name is worker <{self.worker_name}>')
 
   @staticmethod
   def convert_str_to_bool_int_float_str(str_point_format):
@@ -86,24 +86,24 @@ class GSheetMLScheduler():
     return ''.join(random.choice(chars) for _ in range(length))
 
   @staticmethod
-  def complete_missing_config_params(gsheet_config, hardcoded_default_config):
+  def complete_missing_config_params(gsheets_config, hardcoded_default_config):
     """
-    Completes gsheet_config with hardcoded default key/values
+    Completes gsheets_config with hardcoded default key/values
     """
     full_config = dict(hardcoded_default_config)
-    for gsheet_key in gsheet_config:
-      full_config[gsheet_key] = gsheet_config[gsheet_key]
+    for gsheets_key in gsheets_config:
+      full_config[gsheets_key] = gsheets_config[gsheets_key]
     return full_config
 
   def login_and_get_sheets(self):
     """
-    This opens a popup to give your Colab file the reading/writing rights on the GSheet file
+    This opens a popup to give your Colab file the reading/writing rights on the GSheets file
     Access rights do not persist after you close the Colab browser tab
     Rights are only given to that specific Colab browser tab
 
     This uses colab.auth library
     """
-    if self.google_service_account_json_path is None: # Use Google Docs Sheets API through Colab
+    if self.service_account_json_path is None: # Use Google Docs Sheets API through Colab
       if not is_colab:
         print("This isn't running on Colab. Outside of Colab, you must use 'google_service_account_json_path' to authenticate")
         raise(Exception("NotColabNorServiceAccountError"))
@@ -111,9 +111,9 @@ class GSheetMLScheduler():
       credentials, _ = google_auth_default()
       gclient = gspread.authorize(credentials)
     else: # Use Google Docs Sheets API with a Google Service Account key
-      gclient = gspread.service_account(filename=self.google_service_account_json_path)
+      gclient = gspread.service_account(filename=self.service_account_json_path)
     
-    all_sheets = gclient.open_by_url(self.gsheet_file_url)
+    all_sheets = gclient.open_by_url(self.gsheets_file_url)
     return all_sheets
 
   def download_data(self):
@@ -153,7 +153,7 @@ class GSheetMLScheduler():
         point_value = str_value.replace(",", ".")
       else:
         point_value = str_value
-      converted_type_value = GSheetMLScheduler.convert_str_to_bool_int_float_str(point_value)
+      converted_type_value = GSheetsMLScheduler.convert_str_to_bool_int_float_str(point_value)
       config_defaults[config_key] = converted_type_value
 
       # Part 2: The config values of all lines except the first 2 (first is key names, second is defaults)
@@ -164,7 +164,7 @@ class GSheetMLScheduler():
           point_value = str_value.replace(",", ".")
         else:
           point_value = str_value
-        converted_type_value = GSheetMLScheduler.convert_str_to_bool_int_float_str(point_value)
+        converted_type_value = GSheetsMLScheduler.convert_str_to_bool_int_float_str(point_value)
         values[config_key][i] = converted_type_value
 
     self.size = size
@@ -193,7 +193,7 @@ class GSheetMLScheduler():
   def find_ready_run(self):
     """
     Searches the first cell of the "status" column with the string content "ready"
-    This allows you to write things in other parts of the Google Sheet as drafts
+    This allows you to write things in other parts of the Google Sheets as drafts
     Write "ready" in the "status" column once you want this line to be runned
 
     Returns: run_id, config. In this function (unlike in find_claim_and_start_run) it returns the run_id
@@ -205,9 +205,9 @@ class GSheetMLScheduler():
     for i in range(len(self.values["status"])):
       if self.values["status"][i] == "ready" and self.values["worker_name"][i] == "":
         config = self.get_run_config(i)
-        self.currently_running_config = config # We store the config that has gsheet values + gsheet defaults, not the one with hardcoded defaults
+        self.currently_running_config = config # We store the config that has gsheets values + gsheets defaults, not the one with hardcoded defaults
         if self.hardcoded_default_config is not None:
-          config = GSheetMLScheduler.complete_missing_config_params(config, self.hardcoded_default_config)
+          config = GSheetsMLScheduler.complete_missing_config_params(config, self.hardcoded_default_config)
         return i, config
 
     return None, None
@@ -231,7 +231,7 @@ class GSheetMLScheduler():
       print(f'Failure, run {run_id} ({self.values["run_name"][run_id]}) is already claimed by the worker <{self.values["worker_name"][run_id]}>')
       self.currently_running_config = None
       return False
-    self.sheet.update_cell(1+2+run_id, 1+self.key_ids["worker_name"], self.worker_name) # Gsheet (0,0) cell is called (1,1)
+    self.sheet.update_cell(1+2+run_id, 1+self.key_ids["worker_name"], self.worker_name) # Gsheets (0,0) cell is called (1,1)
 
     # Part 2: Wait long enough for another worker to eventually erase your claim
     time.sleep(2.0)
@@ -339,7 +339,7 @@ class GSheetMLScheduler():
     self.currently_running_config = updated_config
 
     if self.hardcoded_default_config is not None:
-      updated_config = GSheetMLScheduler.complete_missing_config_params(updated_config, self.hardcoded_default_config)
+      updated_config = GSheetsMLScheduler.complete_missing_config_params(updated_config, self.hardcoded_default_config)
     return updated_config, changed_keys
 
   def sync_config_and_status(self, new_status_str=None):

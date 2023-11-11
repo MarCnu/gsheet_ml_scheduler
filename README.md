@@ -1,35 +1,35 @@
-# Google Sheet ML Scheduler: Google Docs Sheets live editing flexibility to manage your Machine Learning experiments!
+# Google Sheets ML Scheduler: Google Docs Sheets live editing flexibility to manage your Machine Learning experiments!
 A simple experiment scheduler that allows multiple instances of Colab to fetch machine learning experiment metaparameters by reading/writing in a Sheet from Google Docs Sheets.  
 
 ## A simple tool with only 3 features:  
-1. Let your Colab script fetch a run config from a Sheet
+1. Let your Colab script fetch a run config from a sheet
 2. Check during a run if the config has been updated (to manually change the learning rate for example)
-3. Let your Colab script write in the Sheet a list of new future runs (for a metaparameter grid search for example)
+3. Let your Colab script write in the sheet a list of new future runs (for a metaparameter grid search for example)
 
 ### Installation
 ```bash
 # In the terminal
-pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
+pip install git+https://github.com/MarCnu/gsheets_ml_scheduler.git
 # In Colab
-!pip install git+https://github.com/MarCnu/gsheet_ml_scheduler.git
+!pip install git+https://github.com/MarCnu/gsheets_ml_scheduler.git
 ```
 ### BASIC USE: Fetch run configs until none is left in "ready" status
 1) Make a copy of this Google Docs Sheets file [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit)  
    **File > Create a copy**  
-![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/0_basic_template.png)
+![Basic Template](https://raw.githubusercontent.com/MarCnu/gsheets_ml_scheduler/main/readme_files/0_basic_template.png)
 
 2) Retrieve the sharing link (no need to give read/write rights)  
    **Share > Copy link**  
    
-3) Run this in Colab and replace the `sheet_link` by your own  
+3) Run this in Colab and replace the `sheets_link` by your own  
    <a href="https://colab.research.google.com/drive/1JsnfMWknoiij5l5V1lQSdofWJxudJwSN"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
 ```python
-from gsheet_ml_scheduler.scheduler import GSheetMLScheduler
+from gsheets_ml_scheduler.scheduler import GSheetsMLScheduler
 import time
 
 # Each time you restart a Colab session, a popup will ask for read/write rights again
-sheet_link = "https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit"
-scheduler = GSheetMLScheduler(sheet_link)
+sheets_link = "https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit"
+scheduler = GSheetsMLScheduler(sheets_link)
 
 while True:
   # Finds a run with the status "ready" and replaces "ready" by "running"
@@ -49,7 +49,7 @@ while True:
   scheduler.run_done()
 ```
 ```bash
-Scheduler connected to GSheet, its name is worker <43dLkW>
+Scheduler connected to GSheets, its name is worker <43dLkW>
 Starting run 1 with config={'n_epoch': 10, 'learning_rate': 0.0005}
 Starting run 2 with config={'n_epoch': 10, 'learning_rate': 0.0001}
 Starting run 3 with config={'n_epoch': 10, 'learning_rate': 5e-05}
@@ -57,27 +57,27 @@ No more ready runs
 ```
 
 4) The sheet has been updated!  
-   ![Running](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/1_running.png)
+   ![Running](https://raw.githubusercontent.com/MarCnu/gsheets_ml_scheduler/main/readme_files/1_running.png)
 
 5) **Try again:**
    Copy/paste more runs.  
    Make copies of your Colab file to allow running multiple sessions at the same time.  
-   ![Instance copies](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/2_instance_copies.png)  
+   ![Instance copies](https://raw.githubusercontent.com/MarCnu/gsheets_ml_scheduler/main/readme_files/2_instance_copies.png)  
    Run them all at the same time.  
-   All the Colab workers will connect to the same Google Sheet and modify it!  
+   All the Colab workers will connect to the same Google Sheets and modify it!  
    Out of the box, nothing to program, no complicated 3rd party website, no account to create.  
-   ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/3_multi_worker.png)
+   ![Multi Worker](https://raw.githubusercontent.com/MarCnu/gsheets_ml_scheduler/main/readme_files/3_multi_worker.png)
    
 ### ALL FEATURES: How to write new runs for metaparameter grid search. How to sync config metadata while an experiment is running.  
-Run this in Colab and replace the `sheet_link` by your copy of the [GSheetMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit) (see the BASIC USE tutorial)  
+Run this in Colab and replace the `sheets_link` by your copy of the [GSheetsMLScheduler Basic Template](https://docs.google.com/spreadsheets/d/1HSmobuuXsOgUOM5cQ-ecHJS9hVrEj6D3AZG8gokbj6I/edit) (see the BASIC USE tutorial)  
 <a href="https://colab.research.google.com/drive/1vxvmURd5_Ka_ui4UyH5DREf74V8vCtyD"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>  
 The result looks like that:  
-![All features](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/4_all_features.png)
+![All features](https://raw.githubusercontent.com/MarCnu/gsheets_ml_scheduler/main/readme_files/4_all_features.png)
 
 ### Colab + Google Sheets + Weights & Biases
-For a great and easy to use ML expriment environment, you can combine both this GSheetMLScheduler for scheduling and the famous Weight & Biases platform for logging.  
-You'll be able to track the progress of your learning with graphs on WandB in real time and then update your GSheet to change metaparameters on the fly!  
-![Sheets WandB](https://raw.githubusercontent.com/MarCnu/gsheet_ml_scheduler/main/readme_files/5_gsheet_weight_and_biases.png)
+For a great and easy to use ML expriment environment, you can combine both this GSheetsMLScheduler for scheduling and the famous Weight & Biases platform for logging.  
+You'll be able to track the progress of your learning with graphs on WandB in real time and then update your GSheets to change metaparameters on the fly!  
+![Sheets WandB](https://raw.githubusercontent.com/MarCnu/gsheets_ml_scheduler/main/readme_files/5_gsheets_weight_and_biases.png)
 
 ## Authenticate with Google Service Account
 
@@ -91,52 +91,52 @@ To obtain a service_account.json file, follow this video: https://www.youtube.co
 4. In the service account > Keys tab > Add Key > Json
 
 Once you have downloaded the json file, open it, copy the value of `client_email` and in the sharing settings of your Sheets file, add this email to the Editors  
-Finally, use the parameter `google_service_account_json_path` during the initialisation of `GSheetMLScheduler` and `GSheetMLRunWriter`  
+Finally, use the parameter `google_service_account_json_path` during the initialisation of `GSheetsMLScheduler` and `GSheetsMLRunWriter`  
 
 ## Documentation
-### GSheetMLScheduler
+### GSheetsMLScheduler
 ```python
-from gsheet_ml_scheduler.scheduler import GSheetMLScheduler
+from gsheets_ml_scheduler.scheduler import GSheetsMLScheduler
 
-# gsheet_file_url (str): The sharing link of your Google Docs Sheets
+# gsheets_file_url (str): The sharing link of your Google Docs Sheets
 # sheet_index(int, optional): In case you want to use a specific tab of the Google Docs Sheets
-# hardcoded_default_config (dict, optional): For static metaparameters not provided to the Sheet
+# hardcoded_default_config (dict, optional): For static metaparameters not provided to the sheet
 # comma_number_format (bool, optional): For Google Docs languages that use comma separators for decimal numbers ("-2,0" "5,0E-3")
 # google_service_account_json_path (str, optional): To use Google Service Account to access the Google Docs Sheets API, mandatory if you're not using Colab
-scheduler = GSheetMLScheduler(gsheet_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, google_service_account_json_path=None)
+scheduler = GSheetsMLScheduler(gsheets_file_url, sheet_index=0, hardcoded_default_config=None, comma_number_format=False, google_service_account_json_path=None)
 
 
 # This can be used my multiple Colab instances (aka workers) in parallel
 run_name, config = scheduler.find_claim_and_start_run()
 
 # The same but in three separate functions, when using hardcoded_default_config=None
-ready_run_id, gsheet_config = scheduler.find_ready_run()
+ready_run_id, gsheets_config = scheduler.find_ready_run()
 claim_success = scheduler.claim_and_start_run(ready_run_id)
-config = GSheetMLScheduler.complete_missing_config_params(gsheet_config, hardcoded_default_config)
+config = GSheetsMLScheduler.complete_missing_config_params(gsheets_config, hardcoded_default_config)
 
 
-# This both downloads the Sheet run config and changes the "status" at the same time
+# This both downloads the sheet run config and changes the "status" at the same time
 updated_config, changed_keys = scheduler.sync_config_and_status(new_status_str=None)
 
 # The same but in three separate functions, when using hardcoded_default_config=None
 scheduler.update_status(new_status_str)
-gsheet_updated_config, changed_keys = scheduler.check_for_config_updates()
-updated_config = GSheetMLScheduler.complete_missing_config_params(gsheet_updated_config, hardcoded_default_config)
+gsheets_updated_config, changed_keys = scheduler.check_for_config_updates()
+updated_config = GSheetsMLScheduler.complete_missing_config_params(gsheets_updated_config, hardcoded_default_config)
 
 # Replaces "status" and sets a blue background
 scheduler.run_done(new_status_str="done")
 ```  
-### GSheetMLRunWriter
+### GSheetsMLRunWriter
 ```python
-from gsheet_ml_scheduler.run_writer import GSheetMLRunWriter
+from gsheets_ml_scheduler.run_writer import GSheetsMLRunWriter
 
-# gsheet_file_url (str): The sharing link of your Google Docs Sheets
+# gsheets_file_url (str): The sharing link of your Google Docs Sheets
 # sheet_index(int, optional): In case you want to use a specific tab of the Google Docs Sheets
 # comma_number_format (bool, optional): For Google Docs languages that use comma separators for decimal numbers ("-2,0" "5,0E-3")
-# google_service_account_json_path (str, optional): To use Google Service Account to access the Google Docs Sheets API, mandatory if you're not using Colab
-run_writer = GSheetMLRunWriter(gsheet_file_url, sheet_index=0, comma_number_format=False, google_service_account_json_path=None)
+# service_account_json_path (str, optional): To use Google Service Account to access the Google Sheets API, mandatory if you're not using Colab
+run_writer = GSheetsMLRunWriter(gsheets_file_url, sheet_index=0, comma_number_format=False, google_service_account_json_path=None)
 
-# configs (list of dicts): A list of configs to be added to the Sheet
+# configs (list of dicts): A list of configs to be added to the sheet
 run_writer.write_runs(configs)
 ```
 ### Sheet format
@@ -154,7 +154,7 @@ run_writer.write_runs(configs)
 ```python
 print("Colors", scheduler.colors) # You can change the colors
 
-scheduler.download_data() # Manually downloads the gsheet data
+scheduler.download_data() # Manually downloads the gsheets data
 
 print("Nb_runs", scheduler.nb_runs)
 print("Keys", scheduler.keys)
@@ -168,7 +168,7 @@ print("\nAll run-status-configs")
 for i in range(scheduler.nb_runs):
   print([scheduler.values["run_name"][i], scheduler.values["status"][i], scheduler.get_run_config(i)])
 
-# You can make manual read/write operations to the Sheet using the gspread library
+# You can make manual read/write operations to the sheet using the gspread library
 # scheduler.all_sheets contains the gspread file root, if you want to access another tab of the file
 # scheduler.sheet can be used to call all gspread functions
 # Google Sheets uses (1,1) for the top left cell, not (0,0) as in normal Python
