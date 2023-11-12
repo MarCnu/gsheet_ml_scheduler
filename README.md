@@ -135,9 +135,8 @@ from gsheets_ml_scheduler.run_writer import GSheetsMLRunWriter
 
 # gsheets_file_url (str): The sharing link of your Google Docs Sheets
 # sheet_index(int, optional): In case you want to use a specific tab of the Google Docs Sheets
-# comma_number_format (bool, optional): For Google Docs languages that use comma separators for decimal numbers ("-2,0" "5,0E-3")
 # service_account_json_path (str, optional): To use Google Service Account to access the Google Sheets API, mandatory if you're not using Colab
-run_writer = GSheetsMLRunWriter(gsheets_file_url, sheet_index=0, comma_number_format=False, service_account_json_path=None)
+run_writer = GSheetsMLRunWriter(gsheets_file_url, sheet_index=0, service_account_json_path=None)
 
 # configs (list of dicts): A list of configs to be added to the sheet
 run_writer.write_runs(configs)
