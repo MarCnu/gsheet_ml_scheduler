@@ -9,16 +9,14 @@ import gspread
 from gspread.utils import rowcol_to_a1
 
 class GSheetsMLRunWriter():
-  def __init__(self, gsheets_file_url, sheet_index=0, comma_number_format=False, service_account_json_path=None):
+  def __init__(self, gsheets_file_url, sheet_index=0, service_account_json_path=None):
     """
     gsheets_file_url (str): The URL of the Google Sheets file
     sheet_index (int, optional): In case you don't want to use the default "Sheet1" tab (default is 0)
-    comma_number_format (bool, optional): In some languages, Google Sheets uses decimal numbers with a comma, for example "-2,0" or "1,5E-3" (default is False, indicating period as the default decimal separator)
     service_account_json_path (str, optional): Set to None (default) to get a popup asking to give this Colab instance the right to modify a Google Account (the right is revoked when the broswer tab is closed)
                                                       Set to a path to the file 'service_account.json' to connect to Google's APIs without Colab. Even to read/write a publicly modifiable Google Docs file, bots need a Google Service Account key
     """
     self.gsheets_file_url = gsheets_file_url
-    self.comma_number_format = comma_number_format
     self.service_account_json_path = service_account_json_path
 
     self.colors = {
@@ -79,10 +77,7 @@ class GSheetsMLRunWriter():
         cell_name_end = rowcol_to_a1(1+line_start_python+n_lines-1, 1+col_python)
         values = []
         for value in value_list:
-          str_value = str(value)
-          if self.comma_number_format:
-            str_value = str_value.replace(".",",") # Here we replace points by periods
-          values.append([str_value])
+          values.append([value])
         return {'range': f'{cell_name_start}:{cell_name_end}', 'values': values}
 
     updated_keys = set()
